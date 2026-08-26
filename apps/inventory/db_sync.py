@@ -71,10 +71,9 @@ def alter_mysql_user_password(
 
     try:
         with conn.cursor() as cursor:
-            # 用户名/host 已校验；密码走参数化
             cursor.execute(
-                f"ALTER USER `{username}`@`{user_host}` IDENTIFIED BY %s",
-                (new_password,),
+                "ALTER USER %s@%s IDENTIFIED BY %s",
+                (username, user_host, new_password),
             )
             cursor.execute("FLUSH PRIVILEGES")
         conn.commit()
